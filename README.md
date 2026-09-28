@@ -10,29 +10,25 @@
 
 ```mermaid
 flowchart TB
-    subgraph FE["前端（SPA）"]
-        UI["统一聊天入口 + 各功能页<br/>（/chat · /exam · /lesson-prep · /learning-analysis）"]
+    FE["前端 SPA<br/>统一聊天入口 + 各功能页"]
+
+    subgraph API["API 层 · backend/api"]
+        UC["unified_chat 统一入口<br/>SSE 意图路由（规则 + LLM）"]
+        REST["REST 业务路由<br/>auth · qa · exam · lesson_prep · learning_analysis · homework"]
     end
 
-    subgraph API["API 层（backend/api）"]
-        R["api_router —— /api/v1 聚合"]
-        UC["unified_chat 统一入口<br/>POST /chat/stream（SSE）"]
-        A["auth · qa · exam · lesson_prep · learning_analysis · homework"]
+    subgraph AGENT["编排 + Agent 层 · LangGraph 状态机"]
+        SUP["supervisor / orchestrator<br/>LLM 决策路由 + 图懒加载"]
+        QA["qa · 10 节点"]
+        EX["exam · 9 节点"]
+        LP["lesson_prep · 10 节点"]
+        LA["learning_analysis · 10 节点"]
     end
 
-    subgraph CORE["编排与基础层（backend/core）"]
-        SUP["supervisor<br/>主状态机（LLM 路由 + qa 挂 subgraph）"]
-        O["orchestrator<br/>AgentType 路由 + 图懒加载缓存"]
-        KB["knowledge_base<br/>BGE-M3 嵌入 + Milvus 混合召回 + BGE-Reranker 精排"]
-        MCP["MCP Servers<br/>/mcp/kb 知识库 · /mcp/web-search 联网"]
+    subgraph CAP["共享能力层 · backend/core"]
+        KB["knowledge_base（RAG）<br/>BGE-M3 + Milvus + Reranker"]
+        MCP["MCP Servers<br/>/mcp/kb · /mcp/web-search"]
         LF["llm_factory<br/>DeepSeek（langchain-openai）"]
-    end
-
-    subgraph AG["Agent 层（backend/agents · LangGraph 状态机）"]
-        QA["qa · 10 节点<br/>分类 → 检索 → RAG/直答 → 记忆"]
-        EX["exam · 9 节点<br/>两轨批改 + interrupt 教师复核"]
-        LP["lesson_prep · 10 节点<br/>备课 + interrupt 反思回炉"]
-        LA["learning_analysis · 10 节点<br/>学情分析（3 个跨 Agent seam）"]
     end
 
     subgraph DATA["数据层"]
@@ -40,18 +36,18 @@ flowchart TB
         MV[("Milvus<br/>向量检索")]
     end
 
-    FE --> R
-    R --> UC & A
-    UC --> O --> QA
-    UC -->|"guidance 引导跳转"| EX & LP & LA
-    A --> QA & EX & LP & LA
-    QA --> KB & MCP
+    FE --> UC & REST
+    UC -->|"意图路由"| SUP
+    SUP --> QA & EX & LP & LA
+    REST -->|"REST 直达"| QA & EX & LP & LA
+    QA --> KB
     LP --> KB
-    LA -->|"seam① 一键备课"| LP
-    KB --> MV
+    QA --> MCP
     QA & EX & LP & LA --> LF
+    KB --> MV
     EX & LP & LA --> PG
     LF -->|"DeepSeek API"| EXT[("DeepSeek")]
+    LA -.->|"seam① 一键备课"| LP
 ```
 
 > 独立矢量图（贴简历/PPT 用）：[docs/architecture.svg](docs/architecture.svg) —— 浏览器打开可另存为 PNG。
@@ -64,7 +60,7 @@ flowchart TB
 | 统一入口 | `api/v1/unified_chat.py` | 意图路由（规则前置拦截 + LLM 分类）→ QA 直连流式 / 其余引导跳转 / 多 Agent 计划 |
 | 调度层 | `core/supervisor.py` | 顶层主状态机（LangGraph supervisor 图）：LLM 决策路由 + qa 挂 subgraph + 其余引导节点 |
 | 编排层 | `core/orchestrator.py` | Agent 类型定义 + 编译图懒加载缓存（轻量：不直驱 domain agent） |
-| Agent 层 | `agents/{qa,exam,lesson_prep,learning_analysis}` | 四个 LangGraph 状态机，各自独立 state + AsyncPostgresSaver 持久化检查点 |
+| Agent 层 | `agents/{qa,exam,lesson_prep,learning_analysis}` | 四个 LangGraph 状态机，各自独立 state + 检查点持久化（演示环境用 MemorySaver） |
 | 基础层 | `core/{llm_factory,knowledge_base,memory,retry,logger,exceptions}` | LLM 工厂、RAG、多轮记忆、三层兜底、结构化日志、统一异常 |
 | 数据层 | PostgreSQL + Milvus | 业务数据 / 检查点 + 向量检索 |
 
@@ -98,7 +94,7 @@ Word 答卷两轨批改（客观题规则判分 / 简答题 LLM 评分）+ 教�
 | 分类 | 选型 |
 |---|---|
 | Web 框架 | FastAPI 0.117 + Uvicorn + sse-starlette（SSE 流式） |
-| Agent 编排 | LangGraph 1.0（状态机 + AsyncPostgresSaver 持久化检查点 + interrupt 人机协同） |
+| Agent 编排 | LangGraph 1.0（状态机 + 检查点持久化 + interrupt 人机协同） |
 | LLM | DeepSeek（经 langchain-openai 兼容接口，`llm_factory` 统一路由） |
 | 向量检索 | Milvus 2.4（BGE-M3 dense+sparse 混合召回） + BGE-Reranker 精排 |
 | 嵌入 | FlagEmbedding BGE-M3（本地加载） |
@@ -165,6 +161,9 @@ docker compose up -d
 .venv/Scripts/python.exe scripts/seed_exam_math.py
 .venv/Scripts/python.exe scripts/seed_lesson_data.py
 .venv/Scripts/python.exe scripts/seed_learning_data.py
+.venv/Scripts/python.exe scripts/seed_classes.py           # 班级（作业/学情下拉）
+.venv/Scripts/python.exe scripts/seed_learning_data_plus.py # 学情扩充（30 学生 + exam 批改）
+.venv/Scripts/python.exe scripts/seed_high_data.py         # 高中数据（演示覆盖高中则加）
 ```
 
 > 注：新表（作业/学情相关）已由 `backend/db/migrations.py` 在应用启动时幂等迁移，无需手动建。
@@ -217,6 +216,6 @@ PYTHONUTF8=1 PYTHONPATH=. .venv/Scripts/python.exe -m backend.main
 
 ## 遗留优化项（非阻塞）
 
-- 高中（10~12 年级）数据/语料未灌：当前知识点/习题/语料为小学数学，K12 扩展需补高中各科数据
+- 高中结构化数据已由 `scripts/seed_high_data.py` 补齐（高一~高三数学 + 高一物理/化学），但语料（RAG 检索语料）仍以小学为主，高中各科语料可继续扩充
 - 学情报告摘要向量化后置（MVP 未实现：`learning_reports` 落库未同步灌 Milvus 摘要向量，历史报告暂不支持语义检索）
 - 个体画像 / 错因 LLM 增强的价值依赖真实作业数据回流积累
