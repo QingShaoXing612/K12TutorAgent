@@ -50,11 +50,7 @@ flowchart TB
     LA -.->|"seam① 一键备课"| LP
 ```
 
-> 架构图成品（PNG，本地浏览器完整渲染，含投影/字体，GitHub 上显示一致）：
-
 ![系统架构图](docs/architecture.png)
-
-> 矢量源文件（可编辑，贴简历/PPT 可另存高清版）：[docs/architecture.svg](docs/architecture.svg)。注：GitHub 直接渲染 SVG 会剥掉投影并替换中文字体，成品请以 PNG 为准。
 
 **分层职责**
 
