@@ -1,0 +1,147 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1020" height="700" viewBox="0 0 1020 700" font-family="'PingFang SC','Microsoft YaHei','Segoe UI',sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+    </marker>
+    <marker id="arrow-accent" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#f59e0b"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1020" height="700" fill="#ffffff"/>
+
+  <!-- ══════════ ① 前端 ══════════ -->
+  <rect x="30" y="16" width="960" height="56" rx="10" fill="#fffbeb" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="46" y="38" font-size="13" font-weight="700" fill="#b45309">前端（SPA）</text>
+  <rect x="210" y="40" width="600" height="24" rx="6" fill="#ffffff" stroke="#fbbf24"/>
+  <text x="510" y="56" font-size="12" fill="#78350f" text-anchor="middle">统一聊天入口 + 各功能页（/chat · /exam · /lesson-prep · /learning-analysis）</text>
+
+  <!-- ══════════ ② API 层 ══════════ -->
+  <rect x="30" y="88" width="960" height="130" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="46" y="110" font-size="13" font-weight="700" fill="#1d4ed8">API 层 · backend/api</text>
+
+  <rect x="425" y="120" width="170" height="46" rx="8" fill="#ffffff" stroke="#93c5fd"/>
+  <text x="510" y="140" font-size="12" font-weight="700" fill="#0f172a" text-anchor="middle">api_router</text>
+  <text x="510" y="156" font-size="11" fill="#475569" text-anchor="middle">/api/v1 聚合</text>
+
+  <rect x="44" y="120" width="210" height="46" rx="8" fill="#ffffff" stroke="#93c5fd"/>
+  <text x="149" y="140" font-size="12" font-weight="700" fill="#0f172a" text-anchor="middle">unified_chat 统一入口</text>
+  <text x="149" y="156" font-size="10.5" fill="#475569" text-anchor="middle">SSE 意图路由 · QA直连/其余引导</text>
+
+  <rect x="640" y="120" width="336" height="46" rx="8" fill="#ffffff" stroke="#93c5fd"/>
+  <text x="808" y="140" font-size="12" font-weight="700" fill="#0f172a" text-anchor="middle">业务路由（REST）</text>
+  <text x="808" y="156" font-size="10.5" fill="#475569" text-anchor="middle">qa · exam · lesson_prep · learning_analysis · homework</text>
+
+  <!-- ══════════ ③ 编排与基础层 ══════════ -->
+  <rect x="30" y="234" width="960" height="130" rx="10" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="1.5"/>
+  <text x="46" y="256" font-size="13" font-weight="700" fill="#6d28d9">编排与基础层 · backend/core</text>
+
+  <rect x="44" y="266" width="200" height="62" rx="8" fill="#ffffff" stroke="#c4b5fd"/>
+  <text x="144" y="288" font-size="12" font-weight="700" fill="#0f172a" text-anchor="middle">orchestrator</text>
+  <text x="144" y="304" font-size="10.5" fill="#475569" text-anchor="middle">AgentType 路由</text>
+  <text x="144" y="318" font-size="10.5" fill="#475569" text-anchor="middle">+ 图懒加载缓存</text>
+
+  <rect x="262" y="266" width="230" height="62" rx="8" fill="#ffffff" stroke="#c4b5fd"/>
+  <text x="377" y="288" font-size="12" font-weight="700" fill="#0f172a" text-anchor="middle">knowledge_base（RAG）</text>
+  <text x="377" y="304" font-size="10.5" fill="#475569" text-anchor="middle">BGE-M3 嵌入 + Milvus 混合召回</text>
+  <text x="377" y="318" font-size="10.5" fill="#475569" text-anchor="middle">+ BGE-Reranker 精排</text>
+
+  <rect x="510" y="266" width="200" height="62" rx="8" fill="#ffffff" stroke="#c4b5fd"/>
+  <text x="610" y="288" font-size="12" font-weight="700" fill="#0f172a" text-anchor="middle">MCP Servers</text>
+  <text x="610" y="304" font-size="10.5" fill="#475569" text-anchor="middle">/mcp/kb 知识库检索</text>
+  <text x="610" y="318" font-size="10.5" fill="#475569" text-anchor="middle">/mcp/web-search 联网</text>
+
+  <rect x="728" y="266" width="230" height="62" rx="8" fill="#ffffff" stroke="#c4b5fd"/>
+  <text x="843" y="288" font-size="12" font-weight="700" fill="#0f172a" text-anchor="middle">llm_factory</text>
+  <text x="843" y="304" font-size="10.5" fill="#475569" text-anchor="middle">统一模型路由</text>
+  <text x="843" y="318" font-size="10.5" fill="#475569" text-anchor="middle">DeepSeek（langchain-openai）</text>
+
+  <!-- ══════════ ④ Agent 层 ══════════ -->
+  <rect x="30" y="380" width="960" height="150" rx="10" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="46" y="402" font-size="13" font-weight="700" fill="#15803d">Agent 层 · backend/agents（LangGraph 状态机）</text>
+
+  <rect x="44" y="414" width="215" height="92" rx="8" fill="#ffffff" stroke="#86efac"/>
+  <text x="151" y="438" font-size="12.5" font-weight="700" fill="#0f172a" text-anchor="middle">qa · 10 节点</text>
+  <text x="151" y="458" font-size="10.5" fill="#475569" text-anchor="middle">分类 → 检索</text>
+  <text x="151" y="474" font-size="10.5" fill="#475569" text-anchor="middle">→ RAG/直答/联网 → 记忆</text>
+  <text x="151" y="494" font-size="10" fill="#16a34a" text-anchor="middle">SSE 流式</text>
+
+  <rect x="276" y="414" width="215" height="92" rx="8" fill="#ffffff" stroke="#86efac"/>
+  <text x="383" y="438" font-size="12.5" font-weight="700" fill="#0f172a" text-anchor="middle">exam · 9 节点</text>
+  <text x="383" y="458" font-size="10.5" fill="#475569" text-anchor="middle">两轨批改</text>
+  <text x="383" y="474" font-size="10.5" fill="#475569" text-anchor="middle">+ interrupt 教师复核</text>
+  <text x="383" y="494" font-size="10" fill="#16a34a" text-anchor="middle">e2e 20/20</text>
+
+  <rect x="508" y="414" width="215" height="92" rx="8" fill="#ffffff" stroke="#86efac"/>
+  <text x="615" y="438" font-size="12.5" font-weight="700" fill="#0f172a" text-anchor="middle">lesson_prep · 10 节点</text>
+  <text x="615" y="458" font-size="10.5" fill="#475569" text-anchor="middle">备课 + 习题匹配</text>
+  <text x="615" y="474" font-size="10.5" fill="#475569" text-anchor="middle">+ interrupt 反思回炉</text>
+  <text x="615" y="494" font-size="10" fill="#16a34a" text-anchor="middle">质检 + 落库</text>
+
+  <rect x="740" y="414" width="220" height="92" rx="8" fill="#ffffff" stroke="#86efac"/>
+  <text x="850" y="438" font-size="12.5" font-weight="700" fill="#0f172a" text-anchor="middle">learning_analysis · 10 节点</text>
+  <text x="850" y="458" font-size="10.5" fill="#475569" text-anchor="middle">掌握度 + 分层画像</text>
+  <text x="850" y="474" font-size="10.5" fill="#475569" text-anchor="middle">+ 教学建议</text>
+  <text x="850" y="494" font-size="10" fill="#16a34a" text-anchor="middle">3 个跨 Agent seam</text>
+
+  <!-- ══════════ ⑤ 数据层 ══════════ -->
+  <rect x="30" y="546" width="960" height="96" rx="10" fill="#fef2f2" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="46" y="568" font-size="13" font-weight="700" fill="#b91c1c">数据层</text>
+
+  <rect x="44" y="580" width="300" height="48" rx="8" fill="#ffffff" stroke="#fca5a5"/>
+  <text x="194" y="601" font-size="12.5" font-weight="700" fill="#0f172a" text-anchor="middle">PostgreSQL</text>
+  <text x="194" y="617" font-size="10.5" fill="#475569" text-anchor="middle">业务表 + LangGraph 检查点</text>
+
+  <rect x="360" y="580" width="300" height="48" rx="8" fill="#ffffff" stroke="#fca5a5"/>
+  <text x="510" y="601" font-size="12.5" font-weight="700" fill="#0f172a" text-anchor="middle">Milvus</text>
+  <text x="510" y="617" font-size="10.5" fill="#475569" text-anchor="middle">向量检索（BGE-M3 dense+sparse）</text>
+
+  <rect x="676" y="580" width="300" height="48" rx="8" fill="#ffffff" stroke="#fca5a5" stroke-dasharray="4,3"/>
+  <text x="826" y="601" font-size="12.5" font-weight="700" fill="#0f172a" text-anchor="middle">DeepSeek（外部）</text>
+  <text x="826" y="617" font-size="10.5" fill="#475569" text-anchor="middle">LLM API</text>
+
+  <!-- ══════════ 箭头 ══════════ -->
+  <!-- 前端 → api_router -->
+  <line x1="510" y1="64" x2="510" y2="118" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <!-- api_router → unified_chat / 业务路由 -->
+  <line x1="425" y1="143" x2="256" y2="143" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="595" y1="143" x2="638" y2="143" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- unified_chat → orchestrator（意图路由） -->
+  <line x1="149" y1="166" x2="144" y2="264" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="98" y="220" font-size="10" fill="#64748b">意图路由</text>
+
+  <!-- orchestrator → qa（QA 直连流式） -->
+  <line x1="144" y1="328" x2="151" y2="412" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="60" y="372" font-size="10" fill="#64748b">QA 直连流式</text>
+
+  <!-- 业务路由 → 4 agents（直接 HTTP） -->
+  <line x1="808" y1="166" x2="850" y2="412" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="862" y="300" font-size="10" fill="#64748b">REST 直达</text>
+
+  <!-- qa → knowledge_base / MCP -->
+  <line x1="151" y1="414" x2="377" y2="330" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="200" y1="414" x2="560" y2="330" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- lesson_prep → knowledge_base -->
+  <line x1="615" y1="414" x2="410" y2="330" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- 4 agents → llm_factory -->
+  <line x1="383" y1="414" x2="760" y2="330" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="615" y1="414" x2="800" y2="330" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="850" y1="414" x2="843" y2="330" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- llm_factory → DeepSeek -->
+  <line x1="843" y1="328" x2="826" y2="578" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- knowledge_base → Milvus -->
+  <line x1="377" y1="328" x2="510" y2="578" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- agents → PostgreSQL -->
+  <line x1="383" y1="506" x2="260" y2="578" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="615" y1="506" x2="330" y2="578" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- learning_analysis ⇢ lesson_prep（seam 一键备课） -->
+  <path d="M 740 460 L 725 460" fill="none" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#arrow-accent)"/>
+  <text x="620" y="452" font-size="9.5" fill="#b45309">seam① 一键备课</text>
+</svg>
