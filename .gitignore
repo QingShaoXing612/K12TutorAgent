@@ -34,3 +34,9 @@ models/
 *.pid
 .DS_Store
 Thumbs.db
+
+# ================= 面试/简历材料（本地保留，不上传公开仓库）=================
+docs/interview_day.md
+docs/resume_project_experience.md
+docs/resume_qa.md
+docs/demo_script.md

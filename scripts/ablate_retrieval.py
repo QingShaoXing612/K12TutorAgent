@@ -1,6 +1,6 @@
 # scripts/ablate_retrieval.py
 # 检索链消融对比：纯 dense → hybrid(dense+sparse) → hybrid+BGE 精排
-# 用高中评测集（13 题，与 eval_ragas.py HIGH_EVAL_SET 一致）测两级命中：
+# 用高中评测集（13 题，独立评测集：高中数学/物理/化学核心题）测两级命中：
 #   ① 文档级：检索结果 source_name 的文件名（stem）== 预期来源文档
 #   ② 答案级：top-1 chunk 的 content 含该题参考答案关键词（精排价值的真实体现维度）
 # 运行：PYTHONUTF8=1 PYTHONPATH=. .venv/Scripts/python.exe scripts/ablate_retrieval.py
@@ -162,7 +162,7 @@ def main():
     lines = [
         "# 检索链消融对比报告",
         "",
-        f"- 评测集：高中 {n} 题（与 `eval_ragas.py` HIGH_EVAL_SET 一致）",
+        f"- 评测集：高中 {n} 题（独立评测集：高中数学/物理/化学核心题）",
         "- 命中口径两级：① 文档级 = source_name 文件名 == 预期来源；② 答案级 = top-1 chunk 内容含参考答案关键词",
         f"- 三配置统一先召回 {RECALL_K} 候选，再取 top-1 判定",
         "",
